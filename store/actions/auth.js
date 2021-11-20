@@ -8,8 +8,10 @@ export const SET_DID_TRY_AL = 'SET_DID_TRY_AL';
 
 export const setDidTryAL = () => {
     return { type: SET_DID_TRY_AL };
-  };
-  
+};
+
+const API_URL = "https://consult-api.herokuapp.com"
+
 
 export const authenticate = (userId, token) => {
     return dispatch => {
@@ -18,17 +20,19 @@ export const authenticate = (userId, token) => {
 };
 
 export const signup = (email, password) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    myHeaders.append("Cookie", "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTE0ODQxMDVkOTliNmIzZjQyZDJjNCIsImlhdCI6MTYzNjkxMTE2OSwiZXhwIjoxNjQ0Njg3MTY5fQ.ZeYgUHU78xN5tHez1Lg5RhBvywnE4AUP5h24awbkqRI");
     return async dispatch => {
         const response = await fetch(
-            'http://localhost:5000/api/auth/signup',
+            API_URL + '/auth/signup',
             {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: myHeaders,
                 body: JSON.stringify({
                     email: email,
                     password: password,
+                    passwordConfirm: password
                 })
             }
         );
@@ -47,18 +51,18 @@ export const signup = (email, password) => {
         console.log(resData);
         dispatch(
             authenticate(
-                resData.userId,
+                resData.user._id,
                 resData.token,
             )
         );
-        saveDataToStorage(resData.userId, resData.token);
+        saveDataToStorage(resData.user._id, resData.token);
     };
 };
 
 export const login = (email, password) => {
     return async dispatch => {
         const response = await fetch(
-            'http://localhost:5000/api/auth/login',
+            'https://consult-api/api/auth/login',
             {
                 method: 'POST',
                 headers: {
