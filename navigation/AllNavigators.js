@@ -1,18 +1,20 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-// import {
-//   createDrawerNavigator,
-//   DrawerItemList
-// } from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+  DrawerItemList
+} from '@react-navigation/drawer';
 import { Platform, SafeAreaView, Button, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import Colors from '../constants/Colors';
+import * as authActions from '../store/actions/auth';
 
 import Login from '../screens/auth/Login';
 import Signup from '../screens/auth/Signup';
 import Dashboard from '../screens/Dashboard/Dashboard';
+import Wallet from '../screens/Dashboard/Wallet';
 
 const defaultNavOptions = {
   headerStyle: {
@@ -58,6 +60,8 @@ export const BottomNavigator = () => {
           iconName = focused ? 'calendar' : 'calendar-outline';
         } else if (route.name === 'Profile') {
           iconName = focused ? 'person' : 'person-outline';
+        } else if (route.name === "Wallet") {
+          iconName = focused ? 'wallet' : 'wallet-outline'
         }
 
         // You can return any component that you like here!
@@ -76,10 +80,58 @@ export const BottomNavigator = () => {
       component={Dashboard}
     />
     <BottomTabNavigator.Screen
+      name="Wallet"
+      component={Wallet}
+    />
+    <BottomTabNavigator.Screen
       name="Profile"
       component={Dashboard}
     />
   </BottomTabNavigator.Navigator>
 }
+
+const SideDrawerNavigator = createDrawerNavigator();
+
+export const DrawerNavigator = () => {
+  const dispatch = useDispatch();
+
+  <SideDrawerNavigator.Navigator
+    drawerContent={props => {
+      return (
+        <View style={{ flex: 1, paddingTop: 20 }}>
+          <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
+            <DrawerItemList {...props} />
+            <Button
+              title="Logout"
+              color={Colors.primary}
+              onPress={() => {
+                dispatch(authActions.logout());
+                // props.navigation.navigate('Auth');
+              }}
+            />
+          </SafeAreaView>
+        </View>
+      );
+    }}
+    drawerContentOptions={{
+      activeTintColor: Colors.primary
+    }}
+  >
+    {/* <SideDrawerNavigator.Screen
+      name="Profile"
+      component={}
+      options={{
+        drawerIcon: props => (
+          <Ionicons
+            name={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
+            size={23}
+            color={props.color}
+          />
+        )
+      }}
+    /> */}
+  </SideDrawerNavigator.Navigator>
+}
+
 
 
