@@ -15,6 +15,7 @@ import Login from '../screens/auth/Login';
 import Signup from '../screens/auth/Signup';
 import Dashboard from '../screens/Dashboard/Dashboard';
 import Wallet from '../screens/Dashboard/Wallet';
+import Home from '../screens/Dashboard/Home';
 
 const defaultNavOptions = {
   headerStyle: {
@@ -73,7 +74,7 @@ export const BottomNavigator = () => {
   >
     <BottomTabNavigator.Screen
       name="Home"
-      component={Dashboard}
+      component={Home}
     />
     <BottomTabNavigator.Screen
       name="Appointments"
