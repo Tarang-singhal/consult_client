@@ -10,8 +10,8 @@ export const setDidTryAL = () => {
     return { type: SET_DID_TRY_AL };
 };
 
-// const API_URL = "https://consult-api.herokuapp.com"
-const API_URL = 'http://10.0.2.2:5000'
+const API_URL = "https://consult-api.herokuapp.com"
+// const API_URL = 'http://10.0.2.2:5000'
 
 
 export const authenticate = (userId, token) => {
@@ -52,7 +52,6 @@ export const signup = (email, password) => {
 };
 
 export const login = (email, password) => {
-    console.log(email, password)
     return async dispatch => {
         try {
             let response = await Axios.post(
@@ -69,7 +68,6 @@ export const login = (email, password) => {
             )
 
             const resData = response.data;
-            console.log(resData);
             dispatch(
                 authenticate(
                     resData.userId,
