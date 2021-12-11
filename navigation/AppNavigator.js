@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 
-import {AuthNavigator, BottomNavigator} from './AllNavigators';
+import { AuthNavigator, BottomNavigator, DrawerNavigator } from './AllNavigators';
 import StartupScreen from '../screens/main';
 
 const AppNavigator = props => {

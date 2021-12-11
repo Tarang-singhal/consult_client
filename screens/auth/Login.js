@@ -66,6 +66,7 @@ const AuthScreen = props => {
   }, [error]);
 
   const authHandler = async () => {
+    console.log(formState.inputValues)
     let action;
     if (isSignup) {
       action = authActions.signup(
@@ -107,55 +108,56 @@ const AuthScreen = props => {
     //   keyboardVerticalOffset={0}
     //   style={styles.screen}
     // >
-      <LinearGradient colors={['#ffedff', '#ffe3ff']} style={styles.gradient}>
-        <Card style={styles.authContainer}>
-          <ScrollView>
-            <Input
-              id="email"
-              label="E-Mail"
-              keyboardType="email-address"
-              required
-              email
-              autoCapitalize="none"
-              errorText="Please enter a valid email address."
-              onInputChange={inputChangeHandler}
-              initialValue=""
-            />
-            <Input
-              id="password"
-              label="Password"
-              keyboardType="default"
-              secureTextEntry
-              required
-              minLength={5}
-              autoCapitalize="none"
-              errorText="Please enter a valid password."
-              onInputChange={inputChangeHandler}
-              initialValue=""
-            />
-            <View style={styles.buttonContainer}>
-              {isLoading ? (
-                <ActivityIndicator size="small" color={Colors.primary} />
-              ) : (
-                <Button
-                  title={isSignup ? 'Sign Up' : 'Login'}
-                  color={Colors.primary}
-                  onPress={authHandler}
-                />
-              )}
-            </View>
-            <View style={styles.buttonContainer}>
+    <LinearGradient colors={['#ffedff', '#ffe3ff']} style={styles.gradient}>
+      <Card style={styles.authContainer}>
+        {/* <ScrollView> */}
+          <Input
+            id="email"
+            label="E-Mail"
+            keyboardType="email-address"
+            required
+            email
+            autoCapitalize="none"
+            errorText="Please enter a valid email address."
+            onInputChange={inputChangeHandler}
+            initialValue=""
+          />
+          <Input
+            id="password"
+            label="Password"
+            keyboardType="default"
+            secureTextEntry
+            required
+            minLength={5}
+            autoCapitalize="none"
+            errorText="Please enter a valid password."
+            onInputChange={inputChangeHandler}
+            initialValue=""
+          />
+          <View style={styles.buttonContainer}>
+            {isLoading ? (
+              <ActivityIndicator size="small" color={Colors.primary} />
+            ) : (
               <Button
-                title={`Switch to ${isSignup ? 'Login' : 'Sign Up'}`}
-                color={Colors.accent}
-                onPress={() => {
-                  setIsSignup(prevState => !prevState);
-                }}
+                title={isSignup ? 'Sign Up' : 'Login'}
+                color={Colors.primary}
+                onPress={authHandler}
               />
-            </View>
-          </ScrollView>
-        </Card>
-      </LinearGradient>
+            )}
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              disabled={isLoading}
+              title={`Switch to ${isSignup ? 'Login' : 'Sign Up'}`}
+              color={Colors.accent}
+              onPress={() => {
+                setIsSignup(prevState => !prevState);
+              }}
+            />
+          </View>
+        {/* </ScrollView> */}
+      </Card>
+    </LinearGradient>
     // </KeyboardAvoidingView>
   );
 };
@@ -176,11 +178,12 @@ const styles = StyleSheet.create({
   authContainer: {
     width: '80%',
     maxWidth: 400,
-    maxHeight: 400,
+    maxHeight: 500,
     padding: 20
   },
   buttonContainer: {
     marginTop: 10,
+    height: 35
   },
 });
 

@@ -48,8 +48,24 @@ export const AuthNavigator = () => {
 const BottomTabNavigator = createBottomTabNavigator();
 
 export const BottomNavigator = () => {
+  const dispatch = useDispatch();
+
   return <BottomTabNavigator.Navigator
     screenOptions={({ route }) => ({
+      headerRight: (props) => {
+        return <View style={{paddingRight: 10 }}>
+          <SafeAreaView>
+            <Button
+              title="Logout"
+              color={Colors.primary}
+              onPress={() => {
+                dispatch(authActions.logout());
+                // props.navigation.navigate('Auth');
+              }}
+            />
+          </SafeAreaView>
+        </View>
+      },
       tabBarIcon: ({ focused, color, size }) => {
         let iconName;
 
@@ -88,7 +104,7 @@ export const BottomNavigator = () => {
       name="Profile"
       component={Dashboard}
     />
-  </BottomTabNavigator.Navigator>
+  </BottomTabNavigator.Navigator >
 }
 
 const SideDrawerNavigator = createDrawerNavigator();
@@ -96,11 +112,11 @@ const SideDrawerNavigator = createDrawerNavigator();
 export const DrawerNavigator = () => {
   const dispatch = useDispatch();
 
-  <SideDrawerNavigator.Navigator
-    drawerContent={props => {
+  return <SideDrawerNavigator.Navigator
+    screenOptions={props => {
       return (
         <View style={{ flex: 1, paddingTop: 20 }}>
-          <SafeAreaView forceInset={{ top: 'always', horizontal: 'never' }}>
+          <SafeAreaView forceInset={{ top: 'never', horizontal: 'never' }}>
             <DrawerItemList {...props} />
             <Button
               title="Logout"
@@ -118,21 +134,23 @@ export const DrawerNavigator = () => {
       activeTintColor: Colors.primary
     }}
   >
-    {/* <SideDrawerNavigator.Screen
-      name="Profile"
-      component={}
+    <SideDrawerNavigator.Screen
+      name="Home"
+      component={BottomNavigator}
       options={{
+        headerLeftLabelVisible: false,
         drawerIcon: props => (
           <Ionicons
-            name={Platform.OS === 'android' ? 'md-cart' : 'ios-cart'}
+            name={"home"}
             size={23}
             color={props.color}
           />
         )
       }}
-    /> */}
+    />
   </SideDrawerNavigator.Navigator>
 }
+
 
 
 

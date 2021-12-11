@@ -49,12 +49,13 @@ const Wallet = props => {
             '',
             isStaging,
             appInvokeRestricted,
-            urlScheme,
+            // urlScheme
         ).then((result) => {
             console.log("result", result);
             setShowToast(JSON.stringify(result));
             setOrderIdUpdated(false);
         }).catch((err) => {
+            console.log(err)
             setResult(err);
             setShowToast("Error: " + err);
             setOrderIdUpdated(false);

@@ -1,4 +1,4 @@
-import React from 'react';
+import Axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 export const SIGNUP = 'SIGNUP';
 export const LOGIN = 'LOGIN';
@@ -10,7 +10,8 @@ export const setDidTryAL = () => {
     return { type: SET_DID_TRY_AL };
 };
 
-const API_URL = "https://consult-api.herokuapp.com"
+// const API_URL = "https://consult-api.herokuapp.com"
+const API_URL = 'http://10.0.2.2:5000'
 
 
 export const authenticate = (userId, token) => {
@@ -20,83 +21,68 @@ export const authenticate = (userId, token) => {
 };
 
 export const signup = (email, password) => {
-    var myHeaders = new Headers();
-    myHeaders.append("Content-Type", "application/json");
-    myHeaders.append("Cookie", "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTE0ODQxMDVkOTliNmIzZjQyZDJjNCIsImlhdCI6MTYzNjkxMTE2OSwiZXhwIjoxNjQ0Njg3MTY5fQ.ZeYgUHU78xN5tHez1Lg5RhBvywnE4AUP5h24awbkqRI");
     return async dispatch => {
-        const response = await fetch(
-            API_URL + '/auth/signup',
-            {
-                method: 'POST',
-                headers: myHeaders,
-                body: JSON.stringify({
+        try {
+            const response = await Axios.post(
+                API_URL + '/auth/signup',
+                {
                     email: email,
                     password: password,
                     passwordConfirm: password
-                })
-            }
-        );
-
-        if (!response.ok) {
-            const errorResData = await response.json();
-            const errorId = errorResData.error.message;
-            let message = 'Something went wrong!';
-            if (errorId === 'EMAIL_EXISTS') {
-                message = 'This email exists already!';
-            }
-            throw new Error(message);
+                },
+                {
+                    "Content-Type": "application/json",
+                    "Cookie": "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTE0ODQxMDVkOTliNmIzZjQyZDJjNCIsImlhdCI6MTYzNjkxMTE2OSwiZXhwIjoxNjQ0Njg3MTY5fQ.ZeYgUHU78xN5tHez1Lg5RhBvywnE4AUP5h24awbkqRI"
+                }
+            );
+            const resData = await response.data;
+            console.log(resData);
+            dispatch(
+                authenticate(
+                    resData.user._id,
+                    resData.token,
+                ))
+            saveDataToStorage(resData.user._id, resData.token);
+        } catch (error) {
+            console.log(error)
+            throw new Error("Something Went wrong!")
         }
 
-        const resData = await response.json();
-        console.log(resData);
-        dispatch(
-            authenticate(
-                resData.user._id,
-                resData.token,
-            )
-        );
-        saveDataToStorage(resData.user._id, resData.token);
-    };
+    }
 };
 
 export const login = (email, password) => {
+    console.log(email, password)
     return async dispatch => {
-        const response = await fetch(
-            'https://consult-api/api/auth/login',
-            {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
+        try {
+            let response = await Axios.post(
+                API_URL + '/auth/login',
+                {
                     email: email,
                     password: password,
                     returnSecureToken: true
-                })
-            }
-        );
+                },
+                {
+                    "Content-Type": "application/json",
+                    "Cookie": "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTE0ODQxMDVkOTliNmIzZjQyZDJjNCIsImlhdCI6MTYzNjkxMTE2OSwiZXhwIjoxNjQ0Njg3MTY5fQ.ZeYgUHU78xN5tHez1Lg5RhBvywnE4AUP5h24awbkqRI"
+                }
+            )
 
-        if (!response.ok) {
-            const errorResData = await response.json();
-            const errorId = errorResData.error.message;
-            let message = 'Something went wrong!';
-            if (errorId === 'EMAIL_NOT_FOUND') {
-                message = 'This email could not be found!';
-            } else if (errorId === 'INVALID_PASSWORD') {
-                message = 'This password is not valid!';
-            }
-            throw new Error(message);
+            const resData = response.data;
+            console.log(resData);
+            dispatch(
+                authenticate(
+                    resData.userId,
+                    resData.token,
+                )
+            );
+            saveDataToStorage(resData.userId, resData.token);
+
+        } catch (error) {
+            console.log(error)
+            throw new Error("Incorrect Email/Password")
         }
 
-        const resData = await response.json();
-        console.log(resData);
-        dispatch(
-            authenticate(
-                resData.userId,
-                resData.token,
-            )
-        );
-        saveDataToStorage(resData.userId, resData.token);
     };
 };
 
