@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Constants from 'expo-constants';
 import {
     View,
     Text,
@@ -18,7 +19,6 @@ const Wallet = props => {
             setOrderIdUpdated(true);
         }
     });
-    const [mid, setMid] = useState('vvDrhO48383680943249');
     const [orderId, setOrderId] = useState('PARCEL15942011933');
     const [amount, setAmount] = useState('100');
     const [urlScheme, setURLScheme] = useState('');
@@ -38,12 +38,12 @@ const Wallet = props => {
         );
     };
 
-    const startRawTransaction = async () => {
+    const startRawTransaction = () => {
         setShowToast('');
         setResult('');
-        await AllInOneSDKManager.startTransaction(
+        AllInOneSDKManager.startTransaction(
             orderId,
-            mid,
+            Constants.manifest.mid,
             tranxToken,
             amount,
             "https://<callback URL to be used by merchant>",
