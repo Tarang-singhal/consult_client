@@ -41,15 +41,15 @@ const Wallet = props => {
     const startRawTransaction = async () => {
         setShowToast('');
         setResult('');
-        AllInOneSDKManager.startTransaction(
+        await AllInOneSDKManager.startTransaction(
             orderId,
             mid,
             tranxToken,
             amount,
-            '',
+            "https://<callback URL to be used by merchant>",
             isStaging,
             appInvokeRestricted,
-            // urlScheme
+            urlScheme
         ).then((result) => {
             console.log("result", result);
             setShowToast(JSON.stringify(result));

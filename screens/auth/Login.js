@@ -66,7 +66,6 @@ const AuthScreen = props => {
   }, [error]);
 
   const authHandler = async () => {
-    console.log(formState.inputValues)
     let action;
     if (isSignup) {
       action = authActions.signup(
@@ -92,7 +91,6 @@ const AuthScreen = props => {
 
   const inputChangeHandler = useCallback(
     (inputIdentifier, inputValue, inputValidity) => {
-      console.log(inputIdentifier, " change")
       dispatchFormState({
         type: FORM_INPUT_UPDATE,
         value: inputValue,
