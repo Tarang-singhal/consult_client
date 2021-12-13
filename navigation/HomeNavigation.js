@@ -1,20 +1,11 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import {
-  createDrawerNavigator,
-  DrawerItemList
-} from '@react-navigation/drawer';
 import { Platform, SafeAreaView, Button, View } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import Colors from '../constants/Colors';
 import * as authActions from '../store/actions/auth';
 
-import Login from '../screens/auth/Login';
-import Signup from '../screens/auth/Signup';
-import Dashboard from '../screens/Dashboard/Dashboard';
-import Wallet from '../screens/Dashboard/Wallet';
 import Home from '../screens/Dashboard/Home';
 
 const defaultNavOptions = {
@@ -30,9 +21,9 @@ const defaultNavOptions = {
   headerTintColor: Platform.OS === 'android' ? 'white' : Colors.primary
 };
 
-const AuthStackNavigator = createStackNavigator();
+const HomeNavigator = createStackNavigator();
 
-export const AuthNavigator = () => {
+export const Navigator = () => {
   return <AuthStackNavigator.Navigator screenOptions={defaultNavOptions}>
     <AuthStackNavigator.Screen
       name="Login"
