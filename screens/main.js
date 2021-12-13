@@ -14,9 +14,9 @@ const StartupScreen = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log(props)
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem('userData');
+      console.log(userData);
       if (!userData) {
         // props.navigation.navigate('login');
         dispatch(authActions.setDidTryAL());

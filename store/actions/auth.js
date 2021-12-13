@@ -1,4 +1,5 @@
 import Axios from 'axios';
+import Constants from 'expo-constants'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 export const SIGNUP = 'SIGNUP';
 export const LOGIN = 'LOGIN';
@@ -10,7 +11,7 @@ export const setDidTryAL = () => {
     return { type: SET_DID_TRY_AL };
 };
 
-const API_URL = "https://consult-api.herokuapp.com"
+const API_URL = Constants.manifest.extra.API_URL;
 // const API_URL = 'http://10.0.2.2:5000'
 
 
@@ -35,14 +36,16 @@ export const signup = (email, password) => {
                     "Cookie": "jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjYxOTE0ODQxMDVkOTliNmIzZjQyZDJjNCIsImlhdCI6MTYzNjkxMTE2OSwiZXhwIjoxNjQ0Njg3MTY5fQ.ZeYgUHU78xN5tHez1Lg5RhBvywnE4AUP5h24awbkqRI"
                 }
             );
-            const resData = await response.data;
-            console.log(resData);
+            const resData = response.data;
+            const token = resData.token;
+            const userId = resData.user._id;
             dispatch(
                 authenticate(
-                    resData.user._id,
-                    resData.token,
-                ))
-            saveDataToStorage(resData.user._id, resData.token);
+                    userId,
+                    token,
+                )
+            );
+            saveDataToStorage(userId, token);
         } catch (error) {
             console.log(error)
             throw new Error("Something Went wrong!")
@@ -68,13 +71,16 @@ export const login = (email, password) => {
             )
 
             const resData = response.data;
+            const token = resData.token;
+            const userId = resData.user._id;
+            console.log(resData);
             dispatch(
                 authenticate(
-                    resData.userId,
-                    resData.token,
+                    userId,
+                    token,
                 )
             );
-            saveDataToStorage(resData.userId, resData.token);
+            saveDataToStorage(userId, token);
 
         } catch (error) {
             console.log(error)

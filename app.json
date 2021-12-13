@@ -17,7 +17,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "android.io.tarang"
     },
     "android": {
       "adaptiveIcon": {
@@ -29,6 +30,9 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "mid": "vvDrhO48383680943249"
+    "extra": {
+      "API_URL": "https://consult-api.herokuapp.com",
+      "mid": "vvDrhO48383680943249"
+    }
   }
 }
