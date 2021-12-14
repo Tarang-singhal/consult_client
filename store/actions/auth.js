@@ -1,11 +1,14 @@
 import Axios from 'axios';
 import Constants from 'expo-constants'
 import AsyncStorage from '@react-native-async-storage/async-storage'
+import { FETCH_USER_DATA } from './user';
+
 export const SIGNUP = 'SIGNUP';
 export const LOGIN = 'LOGIN';
 export const AUTHENTICATE = 'AUTHENTICATE';
 export const LOGOUT = 'LOGOUT';
 export const SET_DID_TRY_AL = 'SET_DID_TRY_AL';
+
 
 export const setDidTryAL = () => {
     return { type: SET_DID_TRY_AL };
@@ -17,7 +20,13 @@ const API_URL = Constants.manifest.extra.API_URL;
 
 export const authenticate = (userId, token) => {
     return dispatch => {
-        dispatch({ type: AUTHENTICATE, userId: userId, token: token });
+        dispatch({ type: AUTHENTICATE, userId, token });
+    };
+};
+
+export const saveUserData = (data) => {
+    return dispatch => {
+        dispatch({ type: FETCH_USER_DATA, ...data });
     };
 };
 
@@ -38,11 +47,16 @@ export const signup = (email, password) => {
             );
             const resData = response.data;
             const token = resData.token;
-            const userId = resData.user._id;
+            const { _id: userId } = resData.user;
             dispatch(
                 authenticate(
                     userId,
-                    token,
+                    token
+                )
+            );
+            dispatch(
+                saveUserData(
+                    resData.user
                 )
             );
             saveDataToStorage(userId, token);
@@ -72,12 +86,17 @@ export const login = (email, password) => {
 
             const resData = response.data;
             const token = resData.token;
-            const userId = resData.user._id;
+            const { _id: userId } = resData.user;
             console.log(resData);
             dispatch(
                 authenticate(
                     userId,
-                    token,
+                    token
+                )
+            );
+            dispatch(
+                saveUserData(
+                    resData.user
                 )
             );
             saveDataToStorage(userId, token);

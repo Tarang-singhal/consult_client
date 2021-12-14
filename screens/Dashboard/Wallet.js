@@ -9,12 +9,14 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import AllInOneSDKManager from 'paytm_allinone_react-native';
 import { GetTxnToken } from '../../utils/index';
+import { ADD_CASH } from '../../store/actions/user';
 
 const API_URL = Constants.manifest.extra.API_URL
 
 const Wallet = props => {
     const dispatch = useDispatch();
-    const userId = useSelector(state => state.auth.userId) || 'sdasdas';
+    const { userId } = useSelector(state => state.auth);
+    const state = useSelector(state => state.user);
     const [isOrderIdUpdated, setOrderIdUpdated] = useState(false);
     useEffect(() => {
         if (!isOrderIdUpdated) {
@@ -24,11 +26,8 @@ const Wallet = props => {
     });
     const [orderId, setOrderId] = useState('PARCEL15942011933');
     const [amount, setAmount] = useState('100');
-    const [urlScheme, setURLScheme] = useState('');
-    const [showToast, setShowToast] = useState('');
     const [isStaging, setIsStaging] = useState(true);
     const [appInvokeRestricted, setIsAppInvokeRestricted] = useState(true);
-    const [result, setResult] = useState('');
 
     const generateOrderId = () => {
         const r = Math.random() * new Date().getMilliseconds();
@@ -41,8 +40,6 @@ const Wallet = props => {
     };
 
     const startRawTransaction = async () => {
-        setShowToast('');
-        setResult('');
         let tranxToken = await GetTxnToken(orderId, amount, userId)
         AllInOneSDKManager.startTransaction(
             orderId,
@@ -52,24 +49,20 @@ const Wallet = props => {
             `${API_URL}/paytm/callbackURL`,
             isStaging,
             appInvokeRestricted,
-            // urlScheme
         ).then((result) => {
+            dispatch({type: ADD_CASH, amount})
             console.log("result", result);
-            setShowToast(JSON.stringify(result));
             setOrderIdUpdated(false);
         }).catch((err) => {
             console.log(err)
-            setResult(err);
-            setShowToast("Error: " + err);
             setOrderIdUpdated(false);
         });
     };
 
-
     return (
         <View style={styles.screen}>
-            <Text>Wallet</Text>
             <View style={styles.buttonStyle}>
+                <Text>{state.walletAmount}</Text>
                 <Button
                     title="Start Transaction"
                     onPress={() => startRawTransaction()}
@@ -82,8 +75,6 @@ const Wallet = props => {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
     },
     buttonStyle: {
         padding: 8,

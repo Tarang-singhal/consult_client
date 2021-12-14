@@ -5,7 +5,7 @@ const GetTxnToken = async (orderId, amount, userId) => {
     console.log(orderId, amount, userId);
     try{
         const res = await Axios.post(
-            Constants.manifest.extra.API_URL + '/paytm/initiatePayment',
+            Constants.manifest.extra.API_URL + `/paytm/initiatePayment?userId=${userId}`,
             {
                 orderId,
                 amount,

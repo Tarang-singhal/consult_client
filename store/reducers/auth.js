@@ -10,8 +10,10 @@ export default (state = initialState, action) => {
   switch (action.type) {
     case AUTHENTICATE:
       return {
+        ...state,
         token: action.token,
         userId: action.userId,
+        data: action.data,
         didTryAutoLogin: true
       };
     case SET_DID_TRY_AL:
