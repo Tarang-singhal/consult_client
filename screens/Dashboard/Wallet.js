@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from 'react';
+import Constants from 'expo-constants';
 import {
     View,
     Text,
     StyleSheet,
     Button
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AllInOneSDKManager from 'paytm_allinone_react-native';
+import { GetTxnToken } from '../../utils/index';
 
+const API_URL = Constants.manifest.extra.API_URL
 
 const Wallet = props => {
     const dispatch = useDispatch();
+    const userId = useSelector(state => state.auth.userId) || 'sdasdas';
     const [isOrderIdUpdated, setOrderIdUpdated] = useState(false);
     useEffect(() => {
         if (!isOrderIdUpdated) {
@@ -18,11 +22,9 @@ const Wallet = props => {
             setOrderIdUpdated(true);
         }
     });
-    const [mid, setMid] = useState('vvDrhO48383680943249');
     const [orderId, setOrderId] = useState('PARCEL15942011933');
     const [amount, setAmount] = useState('100');
     const [urlScheme, setURLScheme] = useState('');
-    const [tranxToken, setTranxToken] = useState('b9097bda72af4db0a9aa2d00e58a7d451594201196818');
     const [showToast, setShowToast] = useState('');
     const [isStaging, setIsStaging] = useState(true);
     const [appInvokeRestricted, setIsAppInvokeRestricted] = useState(true);
@@ -41,12 +43,13 @@ const Wallet = props => {
     const startRawTransaction = async () => {
         setShowToast('');
         setResult('');
+        let tranxToken = await GetTxnToken(orderId, amount, userId)
         AllInOneSDKManager.startTransaction(
             orderId,
-            mid,
+            Constants.manifest.extra.mid,
             tranxToken,
             amount,
-            '',
+            `${API_URL}/paytm/callbackURL`,
             isStaging,
             appInvokeRestricted,
             // urlScheme
@@ -60,7 +63,7 @@ const Wallet = props => {
             setShowToast("Error: " + err);
             setOrderIdUpdated(false);
         });
-    }
+    };
 
 
     return (
