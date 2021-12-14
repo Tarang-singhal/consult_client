@@ -11,7 +11,7 @@ export const setDidTryAL = () => {
 };
 
 // const API_URL = "https://consult-api.herokuapp.com"
-const API_URL = 'http://10.0.2.2:5000'
+const API_URL = 'http://localhost:5000'
 
 
 export const authenticate = (userId, token) => {
