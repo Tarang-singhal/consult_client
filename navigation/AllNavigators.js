@@ -1,11 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import {
-  createDrawerNavigator,
-  DrawerItemList
-} from '@react-navigation/drawer';
-import { Platform, SafeAreaView, Button, View } from 'react-native';
+import { Platform, SafeAreaView, Button, View, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useDispatch } from 'react-redux';
 import Colors from '../constants/Colors';
@@ -16,6 +12,9 @@ import Signup from '../screens/auth/Signup';
 import Dashboard from '../screens/Dashboard/Dashboard';
 import Wallet from '../screens/Dashboard/Wallet';
 import Home from '../screens/Dashboard/Home';
+import CallingScreen from '../screens/Dashboard/Calling/CallingScreen';
+import CallScreen from '../screens/Dashboard/Calling/CallScreen';
+import IncomingCallScreen from '../screens/Dashboard/Calling/IncomingCallScreen';
 
 const defaultNavOptions = {
   headerStyle: {
@@ -49,11 +48,11 @@ const BottomTabNavigator = createBottomTabNavigator();
 
 export const BottomNavigator = () => {
   const dispatch = useDispatch();
-
+  // Alert.alert("hello");
   return <BottomTabNavigator.Navigator
     screenOptions={({ route }) => ({
       headerRight: (props) => {
-        return <View style={{paddingRight: 10 }}>
+        return <View style={{ paddingRight: 10 }}>
           <SafeAreaView>
             <Button
               title="Logout"
@@ -106,6 +105,31 @@ export const BottomNavigator = () => {
     />
   </BottomTabNavigator.Navigator >
 }
+
+
+const HomeStackNavigator = createStackNavigator();
+
+export const HomeNavigator = () => {
+  return <HomeStackNavigator.Navigator screenOptions={{ headerShown: false }}>
+    <HomeStackNavigator.Screen
+      name="Dashboard"
+      component={BottomNavigator}
+    />
+    <HomeStackNavigator.Screen
+      name="Call"
+      component={CallScreen}
+    />
+    <HomeStackNavigator.Screen
+      name="Calling"
+      component={CallingScreen}
+    />
+    <HomeStackNavigator.Screen
+      name="IncomingCall"
+      component={IncomingCallScreen}
+    />
+  </HomeStackNavigator.Navigator>
+}
+
 
 
 

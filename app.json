@@ -32,7 +32,9 @@
     },
     "extra": {
       "API_URL": "https://consult-api.herokuapp.com",
-      "mid": "vvDrhO48383680943249"
+      "mid": "vvDrhO48383680943249",
+      "APP_NAME": "videocalling",
+      "ACC_NAME": "tarangsinghal2"
     }
   }
 }

@@ -4,7 +4,7 @@ import {
   ActivityIndicator,
   StyleSheet,
 } from 'react-native';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Colors from '../constants/Colors';
