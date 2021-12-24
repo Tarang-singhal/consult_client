@@ -8,13 +8,16 @@ import {
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import AllInOneSDKManager from 'paytm_allinone_react-native';
-import { GetTxnToken } from '../../utils/index';
-import { ADD_CASH } from '../../store/actions/user';
+import { useNavigation } from '@react-navigation/core';
+import { GetTxnToken } from '../../../utils/index';
+import { ADD_CASH } from '../../../store/actions/user';
+import { AppButton } from '../../../components/UI/button';
 
 const API_URL = Constants.manifest.extra.API_URL
 
-const Wallet = props => {
+const AddMoney = props => {
     const dispatch = useDispatch();
+    const navigation = useNavigation();
     const { userId } = useSelector(state => state.auth);
     const state = useSelector(state => state.user);
     const [isOrderIdUpdated, setOrderIdUpdated] = useState(false);
@@ -50,7 +53,7 @@ const Wallet = props => {
             isStaging,
             appInvokeRestricted,
         ).then((result) => {
-            dispatch({type: ADD_CASH, amount})
+            dispatch({ type: ADD_CASH, amount })
             console.log("result", result);
             setOrderIdUpdated(false);
         }).catch((err) => {
@@ -61,13 +64,7 @@ const Wallet = props => {
 
     return (
         <View style={styles.screen}>
-            <View style={styles.buttonStyle}>
-                <Text>{state.walletAmount}</Text>
-                <Button
-                    title="Start Transaction"
-                    onPress={() => startRawTransaction()}
-                />
-            </View>
+            <Text>Add Money</Text>
         </View>
     );
 };
@@ -75,11 +72,9 @@ const Wallet = props => {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-    },
-    buttonStyle: {
-        padding: 8,
-        margin: 8,
+        backgroundColor: '#fff',
+        padding: 16
     }
 });
 
-export default Wallet;
+export default AddMoney;

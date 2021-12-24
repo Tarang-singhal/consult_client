@@ -10,7 +10,8 @@ import * as authActions from '../store/actions/auth';
 import Login from '../screens/auth/Login';
 import Signup from '../screens/auth/Signup';
 import Dashboard from '../screens/Dashboard/Dashboard';
-import Wallet from '../screens/Dashboard/Wallet';
+import Wallet from '../screens/Dashboard/Wallet/Wallet';
+import AddMoney from '../screens/Dashboard/Wallet/AddMoney';
 import Home from '../screens/Dashboard/Home';
 import CallingScreen from '../screens/Dashboard/Calling/CallingScreen';
 import CallScreen from '../screens/Dashboard/Calling/CallScreen';
@@ -37,11 +38,24 @@ export const AuthNavigator = () => {
       name="Login"
       component={Login}
     />
-    <AuthStackNavigator.Screen
+    {/* <AuthStackNavigator.Screen
       name="Signup"
       component={Signup}
-    />
+    /> */}
   </AuthStackNavigator.Navigator>
+}
+
+const WalletStackNavigator = createStackNavigator();
+
+export const WalletNavigator = () => {
+  return <WalletStackNavigator.Navigator >
+    <WalletStackNavigator.Group screenOptions={{ headerShown: false }}>
+      <WalletStackNavigator.Screen
+        name="WalletAmount"
+        component={Wallet}
+      />
+    </WalletStackNavigator.Group>
+  </WalletStackNavigator.Navigator>
 }
 
 const BottomTabNavigator = createBottomTabNavigator();
@@ -97,7 +111,7 @@ export const BottomNavigator = () => {
     />
     <BottomTabNavigator.Screen
       name="Wallet"
-      component={Wallet}
+      component={WalletNavigator}
     />
     <BottomTabNavigator.Screen
       name="Profile"
@@ -110,22 +124,28 @@ export const BottomNavigator = () => {
 const HomeStackNavigator = createStackNavigator();
 
 export const HomeNavigator = () => {
-  return <HomeStackNavigator.Navigator screenOptions={{ headerShown: false }}>
+  return <HomeStackNavigator.Navigator>
+    <HomeStackNavigator.Group screenOptions={{ headerShown: false }}>
+      <HomeStackNavigator.Screen
+        name="Dashboard"
+        component={BottomNavigator}
+      />
+      <HomeStackNavigator.Screen
+        name="Call"
+        component={CallScreen}
+      />
+      <HomeStackNavigator.Screen
+        name="Calling"
+        component={CallingScreen}
+      />
+      <HomeStackNavigator.Screen
+        name="IncomingCall"
+        component={IncomingCallScreen}
+      />
+    </HomeStackNavigator.Group>
     <HomeStackNavigator.Screen
-      name="Dashboard"
-      component={BottomNavigator}
-    />
-    <HomeStackNavigator.Screen
-      name="Call"
-      component={CallScreen}
-    />
-    <HomeStackNavigator.Screen
-      name="Calling"
-      component={CallingScreen}
-    />
-    <HomeStackNavigator.Screen
-      name="IncomingCall"
-      component={IncomingCallScreen}
+      name="AddWalletAmount"
+      component={AddMoney}
     />
   </HomeStackNavigator.Navigator>
 }
