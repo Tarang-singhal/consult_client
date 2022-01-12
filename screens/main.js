@@ -9,6 +9,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import Colors from '../constants/Colors';
 import * as authActions from '../store/actions/auth';
+import { FETCH_USER_DATA } from '../store/actions/user';
 
 const StartupScreen = props => {
   const dispatch = useDispatch();
@@ -16,7 +17,6 @@ const StartupScreen = props => {
   useEffect(() => {
     const tryLogin = async () => {
       const userData = await AsyncStorage.getItem('userData');
-      console.log(userData);
       if (!userData) {
         // props.navigation.navigate('login');
         dispatch(authActions.setDidTryAL());
@@ -34,6 +34,7 @@ const StartupScreen = props => {
 
       // props.navigation.navigate('dashboard');
       dispatch(authActions.authenticate(userId, token));
+      dispatch(authActions.getUserData(userId))
     };
 
     tryLogin();

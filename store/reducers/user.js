@@ -1,4 +1,4 @@
-import { ADD_CASH, SUB_CASH, AVAILABLE_CASH, IS_ADDING_CASH, FETCH_USER_DATA } from '../actions/user';
+import { ADD_CASH, SUB_CASH, AVAILABLE_CASH, IS_ADDING_CASH, FETCH_USER_DATA, SET_AVAILABLITY } from '../actions/user';
 
 const initialState = {
   callRate: 0,
@@ -9,6 +9,57 @@ const initialState = {
   professionName: "",
   role: "user",
   walletAmount: 0,
+  availablity: {
+    monday: {
+      active: false,
+      start: "",
+      end: "",
+      slotSize: 15,
+      breakSize: 10
+    },
+    tuesday: {
+      active: false,
+      start: "",
+      end: "",
+      slotSize: 15,
+      breakSize: 10
+    },
+    wednesday: {
+      active: false,
+      start: "",
+      end: "",
+      slotSize: 15,
+      breakSize: 10
+    },
+    thursday: {
+      active: false,
+      start: "",
+      end: "",
+      slotSize: 15,
+      breakSize: 10
+    },
+    friday: {
+      active: false,
+      start: "",
+      end: "",
+      slotSize: 15,
+      breakSize: 10
+    },
+    saturday: {
+      active: false,
+      start: "",
+      end: "",
+      slotSize: 15,
+      breakSize: 10
+    },
+    sunday: {
+      active: false,
+      start: "",
+      end: "",
+      slotSize: 15,
+      breakSize: 10
+    }
+  }
 };
 
 export default (state = initialState, action) => {
@@ -24,17 +75,24 @@ export default (state = initialState, action) => {
         professionName: action.professionName,
         role: action.role,
         walletAmount: action.walletAmount,
+        availablity: action.availablity,
+        paymentHistory: action.paymentHistory
       }
     case ADD_CASH:
       return {
-        ...initialState,
+        ...state,
         walletAmount: state.walletAmount + Number(action.amount)
       };
     case SUB_CASH:
       return {
-        ...initialState,
+        ...state,
         walletAmount: state.walletAmount - action.amount
       };
+    case SET_AVAILABLITY:
+      return {
+        ...state,
+        availablity: action.availablity
+      }
     default:
       return state;
   }

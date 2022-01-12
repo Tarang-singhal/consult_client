@@ -4,6 +4,7 @@ import {
     View,
     Text,
     StyleSheet,
+    FlatList
 } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/core';
@@ -12,6 +13,7 @@ import { AppButton } from '../../../components/UI/button';
 const Wallet = props => {
     const navigation = useNavigation();
     const state = useSelector(state => state.user);
+    const paymentHistory = state.paymentHistory;
 
 
     return (
@@ -34,7 +36,22 @@ const Wallet = props => {
                     <Text style={{ color: "red" }}> CALL US</Text>
                 </Text>
             </View>
-            <View style={styles.section2}></View>
+            <View>
+                {
+                    state.paymentHistory.length > 0 &&
+                    <Text>Payment History</Text>
+                }
+                <FlatList
+                    data={state.paymentHistory}
+                    renderItem={({ item }) => (
+                        <View style={{ padding: 10, elevation: 2, borderRadius: 5, borderWidth: 1, borderColor: "#eee", margin: 10 }}>
+                            <Text>Rupees: {item.TXNAMOUNT}</Text>
+                            <Text>Status: {item.STATUS}</Text>
+                        </View>
+                    )}
+                    keyExtractor={(item) => item.TXNID}
+                />
+            </View>
         </View>
     );
 };

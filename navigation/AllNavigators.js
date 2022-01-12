@@ -16,6 +16,10 @@ import Home from '../screens/Dashboard/Home';
 import CallingScreen from '../screens/Dashboard/Calling/CallingScreen';
 import CallScreen from '../screens/Dashboard/Calling/CallScreen';
 import IncomingCallScreen from '../screens/Dashboard/Calling/IncomingCallScreen';
+import AddSlots from '../screens/Dashboard/addSlots';
+import { AppButton } from '../components/UI/button';
+import UserProfile from '../screens/Dashboard/UserProfile';
+import Appointments from '../screens/Dashboard/Appointments';
 
 const defaultNavOptions = {
   headerStyle: {
@@ -107,7 +111,7 @@ export const BottomNavigator = () => {
     />
     <BottomTabNavigator.Screen
       name="Appointments"
-      component={Dashboard}
+      component={Appointments}
     />
     <BottomTabNavigator.Screen
       name="Wallet"
@@ -147,7 +151,17 @@ export const HomeNavigator = () => {
       name="AddWalletAmount"
       component={AddMoney}
     />
-  </HomeStackNavigator.Navigator>
+    <HomeStackNavigator.Group>
+      <HomeStackNavigator.Screen
+        name="Set Your Online Hours"
+        component={AddSlots}
+      />
+    </HomeStackNavigator.Group>
+    <HomeStackNavigator.Screen
+      name="User Profile"
+      component={UserProfile}
+    />
+  </HomeStackNavigator.Navigator >
 }
 
 

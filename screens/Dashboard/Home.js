@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
     View,
     Text,
-    StyleSheet, FlatList, Image, Button, Alert
+    StyleSheet, FlatList, Image, Button, Alert, TouchableOpacity
 } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import axios from 'axios';
@@ -34,7 +34,7 @@ const Home = props => {
         };
         getUserData().then((res) => {
             setData(res.data.data);
-            console.log(res.data.data);
+            // console.log(res.data.data);
         });
     }, []);
 
@@ -63,10 +63,10 @@ const Home = props => {
         const btnTitle = `$ ${item.callRate} / min`
         return (
             item._id != userId ?
-                <View style={styles.item}>
+                <TouchableOpacity style={styles.item} onPress={() => { navigation.navigate("User Profile", item) }}>
                     <View style={styles.imageContainer}>
                         <Image style={styles.profileImage} source={{ uri: item.image }} />
-                        <Text style={styles.rating}>Rated - {item.rating} / 5</Text>
+                        {/* <Text style={styles.rating}>Rated - {item.rating} / 5</Text> */}
                     </View>
                     <View style={styles.content}>
                         <Text style={styles.name}>{item.name}</Text>
@@ -77,12 +77,12 @@ const Home = props => {
                         <View>
                             <Text style={styles.profession}>Specialities - {item.professionName}</Text>
                         </View>
-                        <View style={styles.buttonWidth}>
+                        {/* <View style={styles.buttonWidth}>
                             <Button onPress={() => callUser(item)} title={btnTitle} color="#996600" accessibilityLabel="Learn more about this purple button" />
-                        </View>
+                        </View> */}
                     </View>
 
-                </View>
+                </TouchableOpacity>
                 :
                 null
         );
@@ -110,18 +110,19 @@ const styles = StyleSheet.create({
         // alignItems: 'center',
         height: '100%',
         width: '100%',
-        
+
     },
     item: {
         flex: 1,
-        width: '100%',
+        // width: '100%',
         backgroundColor: 'white',
         margin: 10,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        elevation: 2
     },
     profileImage: {
-        width: 100,
-        height: 75
+        width: 150,
+        height: 100
     },
     imageContainer: {
         margin: 10

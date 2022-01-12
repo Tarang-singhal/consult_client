@@ -88,7 +88,6 @@ export const login = (email, password) => {
             const resData = response.data;
             const token = resData.token;
             const { _id: userId } = resData.user;
-            console.log(resData);
             dispatch(
                 authenticate(
                     userId,
@@ -110,6 +109,27 @@ export const login = (email, password) => {
     };
 };
 
+export const getUserData = (userId) => {
+    return async dispatch => {
+        try {
+            let response = await Axios.get(API_URL + `/user/${userId}`)
+
+            const resData = response.data;
+            // console.log("hello90", resData.data)
+            dispatch(
+                saveUserData(
+                    resData.data
+                )
+            );
+
+        } catch (error) {
+            console.log(error)
+            throw new Error("Something Went wrong!")
+        }
+
+    };
+}
+
 export const logout = () => {
     AsyncStorage.removeItem('userData');
     return { type: LOGOUT };
@@ -120,7 +140,7 @@ const saveDataToStorage = (userId, token) => {
         'userData',
         JSON.stringify({
             userId: userId,
-            token: token,
+            token: token
         })
     );
 };
